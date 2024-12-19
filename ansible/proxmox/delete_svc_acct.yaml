@@ -1,0 +1,23 @@
+---
+- name: Delete Service Account
+  hosts: pve_nodes
+  remote_user: root
+  tasks:
+    - name: Remove Sudo Privileges
+      community.general.sudoers:
+        commands: ALL
+        name: svc_auto
+        nopassword: true
+        state: absent
+        user: svc_auto
+    - name: Delete Service Account
+      ansible.builtin.user:
+        name: svc_auto
+        state: absent
+        remove: true
+      notify:
+        - del-pve-user
+  handlers:
+    - name: del-pve-user
+      ansible.builtin.command:
+        cmd: pveum user delete svc_auto@pam

@@ -1,0 +1,40 @@
+---
+- name: Setup PCI(e) Passthrough
+  hosts: pve_nodes
+  remote_user: root
+  tasks:
+    - name: Enable IOMMU
+      ansible.builtin.lineinfile:
+        path: /etc/default/grub
+        regexp: '^GRUB_CMDLINE_LINUX_DEFAULT="((?:(?!intel_iommu=on).)*?)"$'
+        line: 'GRUB_CMDLINE_LINUX_DEFAULT="\1 intel_iommu=on"'
+        backup: true
+        backrefs: true
+      notify: update-grub
+    - name: Enable IOMMU passthrough mode
+      ansible.builtin.lineinfile:
+        path: /etc/default/grub
+        regexp: '^GRUB_CMDLINE_LINUX_DEFAULT="((?:(?!iommu=pt).)*?)"$'
+        line: 'GRUB_CMDLINE_LINUX_DEFAULT="\1 iommu=pt"'
+        backup: true
+        backrefs: true
+      notify: update-grub
+    - name: Load VFIO Kernel Modules
+      ansible.builtin.copy:
+        dest: /etc/modules-load.d/vfio.conf
+        content: |
+          vfio
+          vfio_iommu_type1
+          vfio_pci
+      notify:
+        - rebuild-initramfs
+        - reboot
+  handlers:
+    - name: update-grub
+      ansible.builtin.command:
+        cmd: update-grub
+    - name: rebuild-initramfs
+      ansible.builtin.command:
+        cmd: update-initramfs -u -k all
+    - name: reboot
+      ansible.builtin.reboot:

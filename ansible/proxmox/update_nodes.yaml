@@ -1,0 +1,12 @@
+---
+- name: Configure Nodes
+  hosts: pve_nodes
+  remote_user: root
+  tasks:
+    - name: Update Nodes
+      ansible.builtin.apt:
+        upgrade: dist
+    - name: Install Sudo
+      ansible.builtin.apt:
+        name: sudo
+        state: present

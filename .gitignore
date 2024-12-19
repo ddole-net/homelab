@@ -1,0 +1,6 @@
+/.envrc
+/tofu/.plan
+/tofu/.terraform/
+/tofu/.bitwarden/
+/.idea/
+/old_homelab/

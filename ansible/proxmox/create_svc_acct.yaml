@@ -1,0 +1,47 @@
+---
+
+- name: Create Service Account
+  hosts: pve_nodes
+  remote_user: root
+  tasks:
+    - name: Add Linux Account
+      ansible.builtin.user:
+        name: svc_auto
+        comment: Machine User
+        uid: 8127
+        shell: /bin/bash
+        create_home: true
+        password: "!"
+        password_lock: true
+        groups: sudo
+        append: yes
+        state: present
+      notify:
+        - add-pve-user
+        - add-pve-privileges
+    - name: Add SSH Public Key
+      ansible.posix.authorized_key:
+        exclusive: true
+        key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIALfHGRizET7lwnfnIZIKuO/9w11dqFKzqzizwWmO/Jw svc_auto@pve
+        manage_dir: true
+        state: present
+        user: svc_auto
+
+    - name: Give Account Sudo Privileges
+      community.general.sudoers:
+        commands: ALL
+        name: svc_auto
+        nopassword: true
+        state: present
+        user: svc_auto
+  handlers:
+    - name: add-pve-user
+      ansible.builtin.shell: |
+        if ! pveum user list | grep -q svc_auto@pam; then
+            pveum user add svc_auto@pam
+        fi
+      args:
+        executable: /bin/bash
+    - name: add-pve-privileges
+      ansible.builtin.command:
+        cmd: pveum acl modify / -user svc_auto@pam -role Administrator

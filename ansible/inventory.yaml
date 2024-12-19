@@ -1,0 +1,8 @@
+pve_nodes:
+  hosts:
+    pve-01.lab.ddole.net:
+      ansible_host: 10.0.0.3
+    pve-02.lab.ddole.net:
+      ansible_host: 10.0.0.4
+    pve-03.lab.ddole.net:
+      ansible_host: 10.0.0.5
