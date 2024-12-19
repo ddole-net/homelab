@@ -1,9 +1,9 @@
 terraform {
   backend "azurerm" {
-    resource_group_name = "homelab-infra"
+    resource_group_name  = "homelab-infra"
     storage_account_name = "ddoletfstate"
-    container_name = "homelab"
-    key = "tofu.tfstate"
+    container_name       = "homelab"
+    key                  = "tofu.tfstate"
 
   }
   required_providers {
@@ -35,11 +35,23 @@ terraform {
       source  = "maxlaverse/bitwarden"
       version = ">=0.12.1"
     }
+    flux = {
+      source  = "fluxcd/flux"
+      version = ">=1.4.0"
+    }
+    tls = {
+      source  = "hashicorp/tls"
+      version = ">=4.0.6"
+    }
+    github = {
+      source  = "integrations/github"
+      version = ">=6.4.0"
+    }
   }
 }
 variable "BWS_TOKEN" {
   sensitive = true
-  type = string
+  type      = string
 }
 
 provider "bitwarden" {
@@ -88,11 +100,34 @@ provider "kubernetes" {
   client_key = base64decode(module.talos.kube_client_key)
   cluster_ca_certificate = base64decode(module.talos.kube_ca_cert)
 }
-provider "helm" {
-  kubernetes {
-    host = module.talos.kube_host
-    client_certificate = base64decode(module.talos.kube_client_cert)
-    client_key = base64decode(module.talos.kube_client_key)
+
+provider "github" {
+  owner = local.github_org
+}
+locals {
+  github_org = "ddole-net"
+  repo = "homelab"
+}
+provider "flux" {
+  kubernetes = {
+    host                   = module.talos.kube_host
+    client_certificate     = base64decode(module.talos.kube_client_cert)
+    client_key             = base64decode(module.talos.kube_client_key)
     cluster_ca_certificate = base64decode(module.talos.kube_ca_cert)
   }
+  git = {
+    url = "ssh://git@github.com/${local.github_org}/${local.repo}.git"
+    ssh = {
+      username    = "git"
+      private_key = tls_private_key.flux.private_key_pem
+    }
+  }
 }
+# provider "helm" {
+#   kubernetes {
+#     host = module.talos.kube_host
+#     client_certificate = base64decode(module.talos.kube_client_cert)
+#     client_key = base64decode(module.talos.kube_client_key)
+#     cluster_ca_certificate = base64decode(module.talos.kube_ca_cert)
+#   }
+# }

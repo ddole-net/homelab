@@ -33,3 +33,31 @@ module "cilium" {
     kubernetes = kubernetes
   }
 }
+
+data github_repository "this" {
+  name = local.repo
+}
+
+resource "tls_private_key" "flux" {
+  algorithm   = "ECDSA"
+  ecdsa_curve = "P256"
+}
+resource "github_repository_deploy_key" "this" {
+  title      = "Flux"
+  repository = data.github_repository.this.name
+  key        = tls_private_key.flux.public_key_openssh
+  read_only  = false
+}
+resource "flux_bootstrap_git" "this" {
+  depends_on = [github_repository_deploy_key.this]
+
+  cluster_domain       = "cluster.local"
+  components = ["source-controller", "kustomize-controller", "helm-controller", "notification-controller",]
+  delete_git_manifests = true
+  embedded_manifests   = true
+  interval             = "1m0s"
+  log_level            = "info"
+  network_policy       = true
+  path = "k8s/system"
+
+}
