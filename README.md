@@ -8,10 +8,10 @@ openTofu to deploy a k8s cluster on TalosLinux.
 
 ### Proxmox
 
-- create_svc_acct.yaml
-- delete_svc_acct.yaml
-- pci_passthrough.yaml
-- update_nodes.yaml
+- [x] create_svc_acct.yaml
+- [x] delete_svc_acct.yaml
+- [x] pci_passthrough.yaml
+- [x] update_nodes.yaml
 
 ## OpenTofu
 
