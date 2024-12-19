@@ -7,6 +7,7 @@ data "bitwarden_secret" "AWS_SECRET_ACCESS_KEY" {
 data "bitwarden_secret" "ROUTEROS_USER" {
   key = "ROUTEROS_USER"
 }
+
 data "bitwarden_secret" "ROUTEROS_PASSWORD" {
   key = "ROUTEROS_PASSWORD"
 }

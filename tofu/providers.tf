@@ -47,6 +47,10 @@ terraform {
       source  = "integrations/github"
       version = ">=6.4.0"
     }
+    time = {
+      source  = "hashicorp/time"
+      version = ">=0.12.1"
+    }
   }
 }
 variable "BWS_TOKEN" {
@@ -73,6 +77,7 @@ provider "routeros" {
   insecure = true
 }
 provider "proxmox" {
+
   endpoint  = "https://10.0.0.3:8006/"
   api_token = data.bitwarden_secret.PVE_API_TOKEN.value
   insecure  = true
@@ -95,9 +100,9 @@ provider "proxmox" {
   }
 }
 provider "kubernetes" {
-  host = module.talos.kube_host
-  client_certificate = base64decode(module.talos.kube_client_cert)
-  client_key = base64decode(module.talos.kube_client_key)
+  host                   = module.talos.kube_host
+  client_certificate     = base64decode(module.talos.kube_client_cert)
+  client_key             = base64decode(module.talos.kube_client_key)
   cluster_ca_certificate = base64decode(module.talos.kube_ca_cert)
 }
 
@@ -106,7 +111,7 @@ provider "github" {
 }
 locals {
   github_org = "ddole-net"
-  repo = "homelab"
+  repo       = "homelab"
 }
 provider "flux" {
   kubernetes = {

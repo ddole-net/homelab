@@ -1,6 +1,6 @@
 module "talos" {
   depends_on = [module.k8s_network]
-  source = "../lib/tofu/talos"
+  source     = "../lib/tofu/talos"
   providers = {
     proxmox  = proxmox
     routeros = routeros
@@ -13,7 +13,7 @@ module "talos" {
   description     = "Primary K8s Cluster"
   dns_domain      = "pve.ddole.net"
   gateway_ip      = "10.0.30.1"
-  nameservers = ["10.0.30.1"]
+  nameservers     = ["10.0.30.1"]
 }
 
 output "talosconfig" {
@@ -26,15 +26,20 @@ output "kubeconfig" {
   sensitive = true
 }
 
+resource "time_sleep" "wait_k8s_bootstrap" {
+  depends_on      = [module.talos]
+  create_duration = "2m"
+}
+
 module "cilium" {
-  depends_on = [module.talos]
-  source = "../lib/tofu/cilium"
+  depends_on = [time_sleep.wait_k8s_bootstrap]
+  source     = "../lib/tofu/cilium"
   providers = {
     kubernetes = kubernetes
   }
 }
 
-data github_repository "this" {
+data "github_repository" "this" {
   name = local.repo
 }
 
@@ -48,16 +53,22 @@ resource "github_repository_deploy_key" "this" {
   key        = tls_private_key.flux.public_key_openssh
   read_only  = false
 }
+
+resource "time_sleep" "wait_cilium_install" {
+  depends_on      = [module.cilium]
+  create_duration = "1m"
+}
+
 resource "flux_bootstrap_git" "this" {
-  depends_on = [github_repository_deploy_key.this]
+  depends_on = [github_repository_deploy_key.this, time_sleep.wait_cilium_install]
 
   cluster_domain       = "cluster.local"
-  components = ["source-controller", "kustomize-controller", "helm-controller", "notification-controller",]
+  components           = ["source-controller", "kustomize-controller", "helm-controller", "notification-controller", ]
   delete_git_manifests = true
   embedded_manifests   = true
   interval             = "1m0s"
   log_level            = "info"
   network_policy       = true
-  path = "k8s/system"
+  path                 = "k8s/clusters/prod"
 
 }
