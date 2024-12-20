@@ -72,3 +72,17 @@ resource "flux_bootstrap_git" "this" {
   path                 = "k8s/clusters/prod"
 
 }
+resource "kubernetes_namespace" "system" {
+  metadata {
+    name = "system"
+  }
+}
+resource "kubernetes_secret" "bitwarden_machine_token" {
+  metadata {
+    name      = "bw-auth-token"
+    namespace = kubernetes_namespace.system.id
+  }
+  data = {
+    token = data.bitwarden_secret.K8S_BWS_TOKEN.value
+  }
+}

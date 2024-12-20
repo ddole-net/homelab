@@ -21,6 +21,17 @@ openTofu to deploy a k8s cluster on TalosLinux.
 4. Install Cilium CNI
 5. Bootstrap FluxCD
 
+## Secrets Management
+
+- All secrets are stored in Bitwarden Secrets Manager and accessed via
+  [maxlaverse/terraform-provider-bitwarden](https://search.opentofu.org/provider/maxlaverse/bitwarden/latest)
+  and the [Secrets Manager Kubernetes Operator](https://bitwarden.com/help/secrets-manager-kubernetes-operator/)
+
+## Lib
+
+Holds templates for use in tofu and ansible, tofu modules, and various prewritten config files
+for systems and apps.
+
 ## K8s
 
 - Deployed via FluxCD
@@ -37,14 +48,3 @@ openTofu to deploy a k8s cluster on TalosLinux.
 - [ ] kube-prometheus-stack
 - [ ] postfix-smtp
 - [ ] velero
-
-## Secrets Management
-
-- All secrets are stored in Bitwarden Secrets Manager and accessed via
-  [maxlaverse/terraform-provider-bitwarden](https://search.opentofu.org/provider/maxlaverse/bitwarden/latest)
-  and the [Secrets Manager Kubernetes Operator](https://bitwarden.com/help/secrets-manager-kubernetes-operator/)
-
-## Lib
-
-Holds templates for use in tofu and ansible, tofu modules, and various prewritten config files
-for systems and apps.
