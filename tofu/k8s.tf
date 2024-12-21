@@ -59,6 +59,24 @@ resource "time_sleep" "wait_cilium_install" {
   create_duration = "1m"
 }
 
+resource "kubernetes_namespace" "flux_system" {
+  depends_on = [time_sleep.wait_cilium_install]
+  metadata {
+    name = "flux-system"
+  }
+}
+
+resource "kubernetes_secret" "FLUX_GPG_SECRET_KEY" {
+  metadata {
+    name      = "flux-gpg"
+    namespace = kubernetes_namespace.flux_system.id
+  }
+  data = {
+    token = data.bitwarden_secret.FLUX_GPG_SECRET_KEY.value
+  }
+}
+
+
 resource "flux_bootstrap_git" "this" {
   depends_on = [github_repository_deploy_key.this, time_sleep.wait_cilium_install]
 
@@ -70,17 +88,19 @@ resource "flux_bootstrap_git" "this" {
   log_level            = "info"
   network_policy       = true
   path                 = "k8s/clusters/prod"
-
+  namespace            = "flux-system"
+  keep_namespace       = true
 }
-resource "kubernetes_namespace" "system" {
+resource "kubernetes_namespace" "bitwarden" {
+  depends_on = [time_sleep.wait_cilium_install]
   metadata {
-    name = "system"
+    name = "bitwarden"
   }
 }
 resource "kubernetes_secret" "bitwarden_machine_token" {
   metadata {
     name      = "bw-auth-token"
-    namespace = kubernetes_namespace.system.id
+    namespace = kubernetes_namespace.bitwarden.id
   }
   data = {
     token = data.bitwarden_secret.K8S_BWS_TOKEN.value

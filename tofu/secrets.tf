@@ -23,3 +23,7 @@ data "bitwarden_secret" "PVE_SSH_PRIVATE_KEY" {
 data "bitwarden_secret" "K8S_BWS_TOKEN" {
   key = "K8S_BWS_TOKEN"
 }
+
+data "bitwarden_secret" "FLUX_GPG_SECRET_KEY" {
+  key = "FLUX_GPG_SECRET_KEY"
+}
