@@ -72,7 +72,7 @@ resource "kubernetes_secret" "FLUX_GPG_SECRET_KEY" {
     namespace = kubernetes_namespace.flux_system.id
   }
   data = {
-    token = data.bitwarden_secret.FLUX_GPG_SECRET_KEY.value
+    key = data.bitwarden_secret.FLUX_GPG_SECRET_KEY.value
   }
 }
 
