@@ -1,20 +1,17 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: seafile
+  name: <NAME>
   namespace: flux-system
 spec:
-  dependsOn:
-    - name: storage
-    - name: ingress-nginx
-  interval: 10m0s
+  interval: 1m0s
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: apps/seafile/
+  path: <PATH TO FOLDER>
   prune: true
   wait: true
   decryption:
     provider: sops
     secretRef:
-      name: flux-gpg
+      name: sops-gpg
