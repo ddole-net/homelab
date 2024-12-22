@@ -17,7 +17,8 @@ metadata:
   name: internal
 spec:
   blocks:
-    - cidr: "10.0.32.0/24"
+    - start: 10.0.32.10
+      stop: 10.0.32.250
   serviceSelector:
     matchLabels:
       access: internal
@@ -28,7 +29,8 @@ metadata:
   name: public
 spec:
   blocks:
-    - cidr: "10.0.33.0/24"
+    - start: 10.0.33.10
+      stop: 10.0.33.250
   serviceSelector:
     matchLabels:
       access: public
