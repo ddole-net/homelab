@@ -5,12 +5,12 @@ metadata:
   namespace: flux-system
 spec:
   dependsOn:
-    - democratic-csi
-    - external-dns
-    - ingress-nginx
-    - secrets
-    - cilium-config
-    - cert-
+    - name: democratic-csi
+    - name: external-dns
+    - name: ingress-nginx
+    - name: secrets
+    - name: cilium-config
+    - name: cert-manager
   interval: 1m0s
   sourceRef:
     kind: GitRepository
