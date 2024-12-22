@@ -63,11 +63,11 @@ enableCiliumEndpointSlice: true
 #  # https://docs.cilium.io/en/stable/network/kubernetes/kubeproxy-free/#maglev-consistent-hashing
 #  algorithm: maglev
 
-gatewayAPI:
-  enabled: true
-  externalTrafficPolicy: local
-  gatewayClass:
-    create: false
+#gatewayAPI:
+#  enabled: false
+#  externalTrafficPolicy: local
+#  gatewayClass:
+#    create: "false"
 
 #envoy:
 #  securityContext:
@@ -75,12 +75,12 @@ gatewayAPI:
 #      keepCapNetBindService: true
 #      envoy: [ NET_ADMIN, PERFMON, BPF ]
 
-ingressController:
-  enabled: true
-  default: true
-  externalTrafficPolicy: Cluster
-  loadbalancerMode: shared
-  enforceHttps: false
+#ingressController:
+#  enabled: true
+#  default: true
+#  externalTrafficPolicy: Cluster
+#  loadbalancerMode: shared
+#  enforceHttps: false
 
 hubble:
   enabled: true
