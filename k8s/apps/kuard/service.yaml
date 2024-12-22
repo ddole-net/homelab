@@ -6,7 +6,7 @@ metadata:
   namespace: default
   labels:
     app: kuard
-    access: public
+    access: private
 spec:
   selector:
     app: kuard
