@@ -1,0 +1,16 @@
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: kuard
+  namespace: default
+spec:
+  ingressClassName: nginx-private
+  rules:
+    - host: kuard.ddole.net
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: kuard
+              servicePort: 80
