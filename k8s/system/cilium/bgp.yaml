@@ -35,8 +35,9 @@ spec:
       safi: unicast
       advertisements:
         matchLabels:
-          advertise: "bgp"
+          advertise: "bgp" # cilium advertises on
 ---
+# BGP routes for Services with Type: LoadBalancer and labels "access" : "{private | internal | public}"
 apiVersion: cilium.io/v2alpha1
 kind: CiliumBGPAdvertisement
 metadata:
