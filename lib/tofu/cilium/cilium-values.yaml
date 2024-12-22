@@ -65,6 +65,10 @@ enableCiliumEndpointSlice: true
 
 gatewayAPI:
   enabled: true
+  externalTrafficPolicy: local
+  gatewayClass:
+    create: false
+
 #envoy:
 #  securityContext:
 #    capabilities:
