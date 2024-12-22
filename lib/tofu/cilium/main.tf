@@ -109,7 +109,7 @@ resource "kubernetes_job" "cilium" {
           command = [
             "cilium",
             "install",
-            "--version=v1.16.4",
+            "--version=v1.16.5",
             "--values",
             "/root/app/values.yaml"
           ]
