@@ -43,22 +43,22 @@ spec:
           - name: MIKROTIK_BASEURL
             valueFrom:
               secretKeyRef:
-                name: mikrotik-credentials
+                name: router-creds
                 key: MIKROTIK_BASEURL
           - name: MIKROTIK_USERNAME
             valueFrom:
               secretKeyRef:
-                name: mikrotik-credentials
+                name: router-creds
                 key: MIKROTIK_USERNAME
           - name: MIKROTIK_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: mikrotik-credentials
+                name: router-creds
                 key: MIKROTIK_PASSWORD
           - name: MIKROTIK_SKIP_TLS_VERIFY
             valueFrom:
               secretKeyRef:
-                name: mikrotik-credentials
+                name: router-creds
                 key: MIKROTIK_SKIP_TLS_VERIFY
 
         livenessProbe:
