@@ -8,7 +8,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: k8s/system/external-dns
+  path: k8s/system/external_dns
   prune: true
   wait: true
   decryption:
