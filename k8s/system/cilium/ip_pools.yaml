@@ -5,7 +5,8 @@ metadata:
   name: private
 spec:
   blocks:
-    - cidr: "10.0.31.0/24"
+    - start: 10.0.31.10
+      stop: 10.0.31.250
   serviceSelector:
     matchLabels:
       access: private
