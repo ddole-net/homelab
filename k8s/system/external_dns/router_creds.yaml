@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: router-creds
+  namespace: external-dns
+stringData:
+  MIKROTIK_BASEURL: ENC[AES256_GCM,data:L07E841IIBxSIJuXKgpl,iv:MdN6FeWxYboUlkr5ZaFidJvlIwV9Hu6nENYBj5m5n/Y=,tag:5aSeeMkL/5Nn2IKfxgfiMg==,type:str]
+  MIKROTIK_USERNAME: ENC[AES256_GCM,data:9IiI/mA=,iv:0T/HcoWRv5JKhgaPnPX8ZJWt23CHDdlg0bAo0uJE+t4=,tag:w2yqZp4RjkznLu681nGVyA==,type:str]
+  MIKROTIK_PASSWORD: ENC[AES256_GCM,data:Stbz/t/m5nAFyQUZ,iv:WQWk0zXyqyzStZz1ybXjUvat7ltuIHotmumm3sNoM7s=,tag:9MCXK88HHncnhJeBcbWhNQ==,type:str]
+  MIKROTIK_SKIP_TLS_VERIFY: ENC[AES256_GCM,data:OF6XxA==,iv:iDplSwlJqPW4uNO3EzvVoqlwxbkBrAB4z2wSbsS8nto=,tag:+B2UQuWSkCvCTNTZxAK+eQ==,type:str]
+sops:
+  kms: [ ]
+  gcp_kms: [ ]
+  azure_kv: [ ]
+  hc_vault: [ ]
+  age: [ ]
+  lastmodified: "2024-12-22T18:09:51Z"
+  mac: ENC[AES256_GCM,data:xoRW2p3Zs4w4syQS9sXpXfOn3nefMgH5arXN586zFdO5UDUjYErunq0kMPuLN+IhI69BSDzMbHb7VEaiufG8VBeu6Pu9SE/5O5vzY8koOw5fs3kNj5DxatDA5ugNeCzOliqZbkYTq4tQG56pAg73Lp34HdWxoDiq84JhVbHQD70=,iv:/8cifrI6eM2pp6sbBX+V6MISai65qTkV2F1T96A19gg=,tag:9ljencNfK4gf37Yez6Vc6A==,type:str]
+  pgp:
+    - created_at: "2024-12-22T18:09:51Z"
+      enc: |-
+        -----BEGIN PGP MESSAGE-----
+        
+        hF4DU+GaVkdTfp0SAQdAl4TI7ssQDrBTWtSXMXYmVTIcxxCISbUsSXp1jG36PiIw
+        UDTUmICgaPC1Nq4M1P6GyHNYmh6UfECEAAPkbESdV/0UezNxUPouBagS3L9PNIhS
+        1GYBCQIQOBeBfrGTUppIg6o9PPJttXx20xqKPDYyc8YIw5UMu90kMYMjbIFpMGKt
+        M+Fd7IegUlWILVybrJ92kSTh35U3Sm9fz3EG7JPNygmjJGmxt7Tly79odgtLnaxc
+        15CpFZY94cE=
+        =5dG4
+        -----END PGP MESSAGE-----
+      fp: 1AB4CEBCE4D3CD6A23AA59104C16B8CD8B6050E3
+  encrypted_regex: ^(data|stringData)$
+  version: 3.9.2

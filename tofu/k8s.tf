@@ -96,12 +96,12 @@ resource "flux_bootstrap_git" "this" {
   namespace            = "flux-system"
   keep_namespace       = true
 }
-resource "kubernetes_namespace" "bitwarden" {
-  depends_on = [time_sleep.wait_cilium_install]
-  metadata {
-    name = "bitwarden"
-  }
-}
+# resource "kubernetes_namespace" "bitwarden" {
+#   depends_on = [time_sleep.wait_cilium_install]
+#   metadata {
+#     name = "bitwarden"
+#   }
+# }
 # resource "kubernetes_secret" "bws_machine_token_k8s_cert_manager" {
 #   metadata {
 #     name      = "bws-token-k8s-cert-manager"
