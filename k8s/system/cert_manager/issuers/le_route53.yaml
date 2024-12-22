@@ -37,11 +37,10 @@ spec:
       - dns01:
           route53:
             accessKeyIDSecretRef:
-              name: bitwarden-secrets
+              name: cert-manager-creds
               key: awsAccessKeyID
-
             secretAccessKeySecretRef:
-              name: bitwarden-secrets
+              name: cert-manager-creds
               key: awsSecretAccessKey
             hostedZoneID: Z05011532DSAQLHAX1739
             region: us-east-1

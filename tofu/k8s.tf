@@ -77,7 +77,7 @@ resource "kubernetes_secret" "FLUX_GPG_SECRET_KEY" {
     namespace = kubernetes_namespace.flux_system.id
   }
   data = {
-    key = data.bitwarden_secret.FLUX_GPG_SECRET_KEY.value
+    "sops.asc" = data.bitwarden_secret.FLUX_GPG_SECRET_KEY.value
   }
 }
 
@@ -102,12 +102,12 @@ resource "kubernetes_namespace" "bitwarden" {
     name = "bitwarden"
   }
 }
-resource "kubernetes_secret" "bws_machine_token_k8s_cert_manager" {
-  metadata {
-    name      = "bws-token-k8s-cert-manager"
-    namespace = kubernetes_namespace.bitwarden.id
-  }
-  data = {
-    token = data.bitwarden_secret.K8S_CERT_MANAGER_BWS_TOKEN.value
-  }
-}
+# resource "kubernetes_secret" "bws_machine_token_k8s_cert_manager" {
+#   metadata {
+#     name      = "bws-token-k8s-cert-manager"
+#     namespace = kubernetes_namespace.bitwarden.id
+#   }
+#   data = {
+#     token = data.bitwarden_secret.K8S_CERT_MANAGER_BWS_TOKEN.value
+#   }
+# }
