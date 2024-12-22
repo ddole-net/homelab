@@ -1,0 +1,92 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: democratic-csi-nfs-persistent
+  namespace: democratic-csi
+spec:
+  chart:
+    spec:
+      chart: democratic-csi
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: democratic-csi
+      version: 0.14.7
+  interval: 1m0s
+  values:
+    csiDriver:
+      name: democratic-csi-nfs-persistent
+    storageClasses:
+      - name: nfs-persistent
+        defaultClass: true
+        reclaimPolicy: Retain
+        volumeBindingMode: Immediate
+        allowVolumeExpansion: true
+        parameters:
+          fsType: nfs
+          detachedVolumesFromSnapshots: "false"
+        mountOptions:
+          - noatime
+          - nfsvers=4.2
+          - hard
+        secrets:
+          provisioner-secret: null
+          controller-publish-secret: null
+          node-stage-secret: null
+          node-publish-secret: null
+          controller-expand-secret: null
+    volumeSnapshotClasses:
+      - name: democratic-csi-nfs-persistent
+        parameters:
+          detachedSnapshots: "true"
+    driver:
+      config:
+        driver: freenas-api-nfs
+        instance_id: null
+        httpConnection:
+          protocol: https
+          host: nas-01.lab.ddole.net
+          port: 443
+          apiKey: ENC[AES256_GCM,data:owfhUZEj3jFq+Veqzoweyb2ljFSGoWHTyOH2io/kt6k2HsOrg4cpLmPRWOwg93BUpR+tWlHp6krTC7Xn8e9ColiA,iv:68Aofps0eTyY+M6duQVGYifuyfPwZKciqRv5IZRASUw=,tag:zFVgIIg+oDdQv0fyqbrzGQ==,type:str]
+          allowInsecure: false
+        zfs:
+          datasetParentName: ssd/k8s/persistent/vols
+          detachedSnapshotsDatasetParentName: ssd/k8s/persistent/snaps
+          datasetEnableQuotas: true
+          datasetEnableReservation: false
+          datasetPermissionsMode: "0777"
+          datasetPermissionsUser: 0
+          datasetPermissionsGroup: 0
+        nfs:
+          shareHost: nas-01.lab.ddole.net
+          shareAlldirs: false
+          shareAllowedHosts: [ ]
+          shareAllowedNetworks:
+            - 10.0.30.0/24
+          shareMaprootUser: root
+          shareMaprootGroup: root
+          shareMapallUser: ""
+          shareMapallGroup: ""
+sops:
+  kms: [ ]
+  gcp_kms: [ ]
+  azure_kv: [ ]
+  hc_vault: [ ]
+  age: [ ]
+  lastmodified: "2024-12-22T22:21:14Z"
+  mac: ENC[AES256_GCM,data:8Tdck9RuoNtcPqdz5u2JICudJxPZfvFizItuQd9oQprBmAptwf1+3bAmufbswGLxe9+FtoFl8VV2/8q2aO3tC+nI2pZg/4Lbl7HMrvYeFDcutePBMwyStjBOdTgp61FT9WgtaZ34TvWxjC/dnN9Nul/2zTQmKMCZcSjU0fhocqA=,iv:ARdDcI/XDc0sWhdfnyVZ6UJf8TKzdxrCwNTzN6ZXoLs=,tag:LabpH/IQHefGypfxzFsYUQ==,type:str]
+  pgp:
+    - created_at: "2024-12-22T22:21:14Z"
+      enc: |-
+        -----BEGIN PGP MESSAGE-----
+        
+        hF4DU+GaVkdTfp0SAQdAsFxzD/cM7AHYJyThZKlb2Pf7Q1yFLXcvYFAwnyPxgyQw
+        X8+72ukElk8ufQZFb099R3ikl6q3TbyFk7uodpAQqG5e0wpgH/GyVhQe/4sZm+rq
+        1GgBCQIQteQUgnIyD7sC9VmSw3fLgBNnGQuezx2ivbUZ+cBHfOYSF84L+K7umuYF
+        rz1ZDkwayk4jJa0tp9vhwctwyQwcw+pAyjMhcn0mqeLCNojlEina/wmhonFnp5/u
+        m0c3bvI3+JHe1w==
+        =QmOI
+        -----END PGP MESSAGE-----
+      fp: 1AB4CEBCE4D3CD6A23AA59104C16B8CD8B6050E3
+  encrypted_regex: apiKey
+  version: 3.9.2
