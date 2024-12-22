@@ -4,6 +4,8 @@ metadata:
   name: ingress-nginx
   namespace: flux-system
 spec:
+  dependsOn:
+    - cert-manager
   interval: 1m0s
   sourceRef:
     kind: GitRepository

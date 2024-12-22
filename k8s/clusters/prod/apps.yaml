@@ -4,6 +4,13 @@ metadata:
   name: apps
   namespace: flux-system
 spec:
+  dependsOn:
+    - democratic-csi
+    - external-dns
+    - ingress-nginx
+    - secrets
+    - cilium-config
+    - cert-
   interval: 1m0s
   sourceRef:
     kind: GitRepository

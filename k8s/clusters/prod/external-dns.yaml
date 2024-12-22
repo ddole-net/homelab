@@ -4,6 +4,8 @@ metadata:
   name: external-dns
   namespace: flux-system
 spec:
+  dependsOn:
+    - secrets
   interval: 1m0s
   sourceRef:
     kind: GitRepository
