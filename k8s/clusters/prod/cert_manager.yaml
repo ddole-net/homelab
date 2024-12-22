@@ -10,7 +10,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: k8s/system/cert-manager
+  path: k8s/system/cert_manager
   prune: true
   wait: true
   decryption:
