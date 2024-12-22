@@ -19,8 +19,8 @@ spec:
       access: private
     controller:
       allowSnippetAnnotations: "true"
-      #      extraArgs:
-      #        default-ssl-certificate: default/ddole-net-crt
+      extraArgs:
+        default-ssl-certificate: "cert-manager/ddole-net-le-staging-wildcard"
       service:
         externalTrafficPolicy: Local
       ingressClassResource:
