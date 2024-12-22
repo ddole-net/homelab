@@ -1,6 +1,6 @@
 module "talos" {
   depends_on = [module.k8s_network]
-  source = "../lib/tofu/talos"
+  source     = "../lib/tofu/talos"
   providers = {
     proxmox  = proxmox
     routeros = routeros
@@ -13,7 +13,7 @@ module "talos" {
   description     = "Primary K8s Cluster"
   dns_domain      = "pve.ddole.net"
   gateway_ip      = "10.0.30.1"
-  nameservers = ["10.0.30.1"]
+  nameservers     = ["10.0.30.1"]
 }
 
 output "talosconfig" {
@@ -27,13 +27,13 @@ output "kubeconfig" {
 }
 
 resource "time_sleep" "wait_k8s_bootstrap" {
-  depends_on = [module.talos]
+  depends_on      = [module.talos]
   create_duration = "2m"
 }
 
 module "cilium" {
   depends_on = [time_sleep.wait_k8s_bootstrap]
-  source = "../lib/tofu/cilium"
+  source     = "../lib/tofu/cilium"
   providers = {
     kubernetes = kubernetes
   }
@@ -55,7 +55,7 @@ resource "github_repository_deploy_key" "this" {
 }
 
 resource "time_sleep" "wait_cilium_install" {
-  depends_on = [module.cilium]
+  depends_on      = [module.cilium]
   create_duration = "1m"
 }
 
@@ -86,7 +86,7 @@ resource "flux_bootstrap_git" "this" {
   depends_on = [github_repository_deploy_key.this, time_sleep.wait_cilium_install]
 
   cluster_domain       = "cluster.local"
-  components = ["source-controller", "kustomize-controller", "helm-controller", "notification-controller",]
+  components           = ["source-controller", "kustomize-controller", "helm-controller", "notification-controller", ]
   delete_git_manifests = true
   embedded_manifests   = true
   interval             = "1m0s"
@@ -102,12 +102,12 @@ resource "kubernetes_namespace" "bitwarden" {
     name = "bitwarden"
   }
 }
-resource "kubernetes_secret" "bitwarden_machine_token" {
+resource "kubernetes_secret" "bws_machine_token_k8s_cert_manager" {
   metadata {
-    name      = "bw-auth-token"
+    name      = "bws-token-k8s-cert-manager"
     namespace = kubernetes_namespace.bitwarden.id
   }
   data = {
-    token = data.bitwarden_secret.K8S_BWS_TOKEN.value
+    token = data.bitwarden_secret.K8S_CERT_MANAGER_BWS_TOKEN.value
   }
 }

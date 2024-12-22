@@ -1,0 +1,14 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: ddole-net-le-staging-wildcard
+  namespace: cert-manager
+spec:
+  secretName: ddole-net-le-staging-wildcard
+  commonName: ddole.net
+  dnsNames:
+    - "ddole.net"
+    - "*.ddole.net"
+  issuerRef:
+    name: letsencrypt-staging
+    kind: ClusterIssuer

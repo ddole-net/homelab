@@ -20,8 +20,8 @@ data "bitwarden_secret" "PVE_API_TOKEN" {
 data "bitwarden_secret" "PVE_SSH_PRIVATE_KEY" {
   key = "PVE_SSH_PRIVATE_KEY"
 }
-data "bitwarden_secret" "K8S_BWS_TOKEN" {
-  key = "K8S_BWS_TOKEN"
+data "bitwarden_secret" "K8S_CERT_MANAGER_BWS_TOKEN" {
+  key = "K8S_CERT_MANAGER_BWS_TOKEN"
 }
 
 data "bitwarden_secret" "FLUX_GPG_SECRET_KEY" {

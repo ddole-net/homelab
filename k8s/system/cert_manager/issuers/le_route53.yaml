@@ -14,11 +14,11 @@ spec:
       - dns01:
           route53:
             accessKeyIDSecretRef:
-              name: route53-secrets
-              key: accessKeyID
+              name: cert-manager-creds
+              key: awsAccessKeyID
             secretAccessKeySecretRef:
-              name: route53-secrets
-              key: secretAccessKey
+              name: cert-manager-creds
+              key: awsSecretAccessKey
             hostedZoneID: Z05011532DSAQLHAX1739
             region: us-east-1
 ---
@@ -37,10 +37,11 @@ spec:
       - dns01:
           route53:
             accessKeyIDSecretRef:
-              name: route53-secrets
-              key: accessKeyID
+              name: bitwarden-secrets
+              key: awsAccessKeyID
+
             secretAccessKeySecretRef:
-              name: route53-secrets
-              key: secretAccessKey
+              name: bitwarden-secrets
+              key: awsSecretAccessKey
             hostedZoneID: Z05011532DSAQLHAX1739
             region: us-east-1
