@@ -20,9 +20,10 @@ spec:
     controller:
       metrics:
         enabled: true
-        podAnnotations:
-          prometheus.io/scrape: "true"
-          prometheus.io/port: "10254"
+        serviceMonitor:
+          enabled: true
+          additionalLabels:
+            release: "kube-prometheus-stack"
       allowSnippetAnnotations: "true"
       extraArgs:
         default-ssl-certificate: "cert-manager/ddole-net-le-staging-wildcard"
