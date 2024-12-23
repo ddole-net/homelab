@@ -18,13 +18,16 @@ spec:
     commonLabels:
       access: private
     controller:
+      metrics:
+        enabled: true
+        podAnnotations:
+          prometheus.io/scrape: "true"
+          prometheus.io/port: "10254"
       allowSnippetAnnotations: "true"
       extraArgs:
         default-ssl-certificate: "cert-manager/ddole-net-le-staging-wildcard"
       service:
         externalTrafficPolicy: Local
-      #        annotations:
-      #          external-dns.alpha.kubernetes.io: 30
       ingressClassResource:
         name: nginx-private
         enabled: true
