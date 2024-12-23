@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stalwart-mail
+  namespace: stalwart-mail
+  labels:
+    app.kubernetes.io/name: stalwart-mail
+    app.kubernetes.io/version: v0.10.7
+    app.kubernetes.io/managed-by: manifest
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: stalwart-mail
+      app.kubernetes.io/version: v0.10.7
+      app.kubernetes.io/managed-by: manifest
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: stalwart-mail
+        app.kubernetes.io/version: v0.10.7
+        app.kubernetes.io/managed-by: manifest
+    spec:
+      containers:
+        - name: stalwart-mail
+          image: stalwartlabs/mail-server:v0.10.7
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+            - containerPort: 443
+            - containerPort: 25
+            - containerPort: 587
+            - containerPort: 465
+            - containerPort: 143
+            - containerPort: 993
+            - containerPort: 4190
+          volumeMounts:
+            - name: stalwart-volume
+              mountPath: /opt/stalwart-mail
+            - name: certs
+              mountPath: /etc/mail-certs/
+              readOnly: true
+            - name: config
+              mountPath: /opt/stalwart-mail/etc/
+              readOnly: false
+          securityContext:
+            capabilities:
+              drop:
+                - ALL
+            allowPrivilegeEscalation: false
+            runAsNonRoot: false #TODO: Figure out how to run rootless
+            seccompProfile:
+              type: RuntimeDefault
+      volumes:
+        - name: stalwart-volume
+          persistentVolumeClaim:
+            claimName: stalwart-mail
+        - name: certs
+          secret:
+            secretName: cert-smtp.k8s.ddole.net
+            items:
+              - key: tls.crt
+                path: cert.fullchain.pem
+              - key: tls.key
+                path: cert.privkey.pem
+        - name: config
+          configMap:
+            name: stalwart-config
+            items:
+              - key: config.toml
+                path: config.toml
