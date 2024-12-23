@@ -20,7 +20,7 @@ spec:
       keep: true
     prometheus:
       enabled: true
-      serviceMonitor:
+      servicemonitor:
         enabled: true
         labels:
           release: "kube-prometheus-stack"
