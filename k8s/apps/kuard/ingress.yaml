@@ -3,6 +3,8 @@ kind: Ingress
 metadata:
   name: kuard-ingress
   namespace: default
+  annotations:
+    external-dns.alpha.kubernetes.io/ttl: "60"
 spec:
   tls: [ ]
   rules:

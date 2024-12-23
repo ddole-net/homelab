@@ -23,8 +23,8 @@ spec:
         default-ssl-certificate: "cert-manager/ddole-net-le-staging-wildcard"
       service:
         externalTrafficPolicy: Local
-        annotations:
-          external-dns.alpha.kubernetes.io: 30
+      #        annotations:
+      #          external-dns.alpha.kubernetes.io: 30
       ingressClassResource:
         name: nginx-private
         enabled: true
