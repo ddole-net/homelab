@@ -8,7 +8,6 @@ spec:
     - name: democratic-csi
     - name: external-dns
     - name: ingress-nginx
-    - name: secrets
     - name: cilium-config
     - name: cert-manager
   interval: 1m0s
