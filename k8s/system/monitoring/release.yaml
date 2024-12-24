@@ -623,7 +623,7 @@ spec:
         storage:
           volumeClaimTemplate:
             spec:
-              storageClassName: nfs-persistent
+              storageClassName: nfs-ephemeral
               accessModes:
                 - ReadWriteOnce
               resources:
@@ -779,9 +779,9 @@ spec:
         # name: ""
         annotations: { }
         data: { }
-      #   auth: |
-      #     foo:$apr1$OFG3Xybp$ckL0FHDAkoXYIlH9.cysT0
-      #     someoneelse:$apr1$DMZX2Z4q$6SbQIfyuLQd.xmo/P0m2c.
+        #   auth: |
+        #     foo:$apr1$OFG3Xybp$ckL0FHDAkoXYIlH9.cysT0
+        #     someoneelse:$apr1$DMZX2Z4q$6SbQIfyuLQd.xmo/P0m2c.
     ## Using default values from https://github.com/grafana/helm-charts/blob/main/charts/grafana/values.yaml
     ##
     grafana:
@@ -803,7 +803,7 @@ spec:
       ## Editable flag for the default dashboards
       ##
       defaultDashboardsEditable: false
-      adminPassword: ENC[AES256_GCM,data:zmooiLZSUUldIcc3w+ctwHPzstaMIJRU/IZY1CAdj63Y6ROcn82xnA==,iv:2ZS4XqGeSHZUxerbFg0PHk5EHHOXdovFJoSPNTCQAK4=,tag:wk7U5zMxmQLtRA7XLpUcCQ==,type:str]
+      adminPassword: ENC[AES256_GCM,data:ZcUTWLnD2AD049UjSdO3a8+9IwWfDFzG1PIkRZ2eX1Lyy1XFJaP+Lw==,iv:rllelMvewy4M7NFRxuNUsREMT7wUaVDwjB3QUwXy+M4=,tag:KuPbYT6aOd3ouE+fNQ6SLA==,type:str]
       rbac:
         ## If true, Grafana PSPs will be created
         ##
@@ -846,7 +846,7 @@ spec:
       persistence:
         enabled: true
         type: sts
-        storageClassName: nfs-persistent
+        storageClassName: nfs-ephemeral
         accessModes:
           - ReadWriteOnce
         size: 20Gi
@@ -1274,8 +1274,8 @@ spec:
             - IPv6
             - IPv4
           ipFamilyPolicy: PreferDualStack
-        # selector:
-        #   component: kube-controller-manager
+          # selector:
+          #   component: kube-controller-manager
       serviceMonitor:
         enabled: true
         ## Scrape interval. If not set, the Prometheus default scrape interval is used.
@@ -1517,8 +1517,8 @@ spec:
             - IPv6
             - IPv4
           ipFamilyPolicy: PreferDualStack
-        # selector:
-        #   component: etcd
+          # selector:
+          #   component: etcd
       ## Configure secure access to the etcd cluster by loading a secret into prometheus and
       ## specifying security configuration below. For example, with a secret named etcd-client-cert
       ##
@@ -1615,8 +1615,8 @@ spec:
             - IPv6
             - IPv4
           ipFamilyPolicy: PreferDualStack
-        # selector:
-        #   component: kube-scheduler
+          # selector:
+          #   component: kube-scheduler
       serviceMonitor:
         enabled: true
         ## Scrape interval. If not set, the Prometheus default scrape interval is used.
@@ -1700,8 +1700,8 @@ spec:
             - IPv6
             - IPv4
           ipFamilyPolicy: PreferDualStack
-        # selector:
-        #   k8s-app: kube-proxy
+          # selector:
+          #   k8s-app: kube-proxy
       serviceMonitor:
         enabled: true
         ## Scrape interval. If not set, the Prometheus default scrape interval is used.
@@ -2222,9 +2222,9 @@ spec:
           admissionCert:
             # default to be 1y
             duration: ""
-          # issuerRef:
-          #   name: "issuer"
-          #   kind: "ClusterIssuer"
+            # issuerRef:
+            #   name: "issuer"
+            #   kind: "ClusterIssuer"
       ## Namespaces to scope the interaction of the Prometheus Operator and the apiserver (allow list).
       ## This is mutually exclusive with denyNamespaces. Setting this to an empty object will disable the configuration
       ##
@@ -3315,7 +3315,7 @@ spec:
           ##
           volumeClaimTemplate:
             spec:
-              storageClassName: nfs-persistent
+              storageClassName: nfs-ephemeral
               accessModes:
                 - ReadWriteOnce
               resources:
@@ -3982,7 +3982,7 @@ spec:
         storage:
           volumeClaimTemplate:
             spec:
-              storageClassName: nfs-persistent
+              storageClassName: nfs-ephemeral
               accessModes:
                 - ReadWriteOnce
               resources:
@@ -4176,9 +4176,9 @@ spec:
         # name: ""
         annotations: { }
         data: { }
-      #   auth: |
-      #     foo:$apr1$OFG3Xybp$ckL0FHDAkoXYIlH9.cysT0
-      #     someoneelse:$apr1$DMZX2Z4q$6SbQIfyuLQd.xmo/P0m2c.
+        #   auth: |
+        #     foo:$apr1$OFG3Xybp$ckL0FHDAkoXYIlH9.cysT0
+        #     someoneelse:$apr1$DMZX2Z4q$6SbQIfyuLQd.xmo/P0m2c.
     ## Setting to true produces cleaner resource names, but requires a data migration because the name of the persistent volume changes. Therefore this should only be set once on initial installation.
     ##
     cleanPrometheusOperatorObjectNames: false
@@ -4197,19 +4197,19 @@ sops:
   azure_kv: [ ]
   hc_vault: [ ]
   age: [ ]
-  lastmodified: "2024-12-23T19:36:41Z"
-  mac: ENC[AES256_GCM,data:eZiOdpLQGxDrVPSDobU5WBp4kReoThhAgiHhnHaVqUZop+9zf/ImGsxcG2v1GcGtKqsdtxc384UXCuh5tPvVG69nyVVOqVoZmxGGy80yMH+v/qBODcwW6/ZV6cy6nizCv9594DfHTw5kDvBq7YupH8AmLEvKq1p7y+wshc/ZqTU=,iv:Borp5eBwJXx5eqXwFUS7yVk7ngUASKErUR/RKwWAQIU=,tag:bow5/Y5mU/UhQN5ZwDzuww==,type:str]
+  lastmodified: "2024-12-24T17:08:09Z"
+  mac: ENC[AES256_GCM,data:VSk6a1Eb+P1TGxD/wrpwzzx5/7oKtP5X/id2OkCiW+ryh+U0myZtnor3GblCszFZKNDtDSo10pJVtoe5LMq5HhKF1OCQqK999j5TkAhqN6iudvQsRlyTXRF4rq+sDW+6QWYHXPJMCiurmwBnivXaDVPQ9+MLuk2oSNKwxmtQw4w=,iv:WO85YeMivpFhIbOUrxlhEaI70VN0I+gjFT4XJCJkd/c=,tag:vHPt600f7l3ZFZXasJiSCA==,type:str]
   pgp:
-    - created_at: "2024-12-23T19:36:41Z"
+    - created_at: "2024-12-24T17:07:19Z"
       enc: |-
         -----BEGIN PGP MESSAGE-----
         
-        hF4DU+GaVkdTfp0SAQdA0KHqOl8wrRC4m5ZUjLqWVnPg1Zo375q2WkHsDT98OD4w
-        j9NNnRn/Ziojhz0LYx26c/XDJ7ja3YtnNL/o25YY7aW2DZF0DpFcLOzA1MQYgApf
-        1GYBCQIQrr8k5flUOR69JXaT//Ar5iwHRN6eW+WW3kl/vzThYtdn6R0QzTQyOx42
-        AeKQaHQeoE1NSDU5G1ixXo3NZ7+eoCPcBNN4ZiSrYILfivWZweKi3DSgBGRRALDX
-        SiejI5n3H0g=
-        =l1Xg
+        hF4DU+GaVkdTfp0SAQdAtMKyn83vzjnKmkIwa+oK2Lf713ZaZqaoLZq8dnptfHsw
+        hYSjd7gt0VdVWXXR4vP9SgQr3Z07koQw0X+DmIcanfMwFxKwRLemWv2ws2XwBaz4
+        1GYBCQIQw/yQ7tfnYnHuK0hSkEzoxEwqkDSZeolraXXQVVk6COlexNoJjVOJUCP1
+        HrvlItwgNWWKfnnS5RmB8IjtSiOrqeTw5UUFlyq8oFLRJ8lDXAQEKL8ur7TsXSgp
+        GjBSVTdQ0sw=
+        =TF/L
         -----END PGP MESSAGE-----
       fp: 1AB4CEBCE4D3CD6A23AA59104C16B8CD8B6050E3
   encrypted_regex: adminPassword
