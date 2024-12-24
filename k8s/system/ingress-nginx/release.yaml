@@ -26,7 +26,7 @@ spec:
             release: "kube-prometheus-stack"
       allowSnippetAnnotations: "true"
       extraArgs:
-        default-ssl-certificate: "cert-manager/ddole-net-le-staging-wildcard"
+        default-ssl-certificate: "cert-manager/ddole-net-le-production-wildcard"
       service:
         externalTrafficPolicy: Local
       ingressClassResource:
