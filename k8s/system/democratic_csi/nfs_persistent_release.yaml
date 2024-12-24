@@ -18,7 +18,7 @@ spec:
       name: democratic-csi-nfs-persistent
     storageClasses:
       - name: nfs-persistent
-        defaultClass: true
+        defaultClass: false
         reclaimPolicy: Retain
         volumeBindingMode: Immediate
         allowVolumeExpansion: true
@@ -73,8 +73,8 @@ sops:
   azure_kv: [ ]
   hc_vault: [ ]
   age: [ ]
-  lastmodified: "2024-12-22T22:21:14Z"
-  mac: ENC[AES256_GCM,data:8Tdck9RuoNtcPqdz5u2JICudJxPZfvFizItuQd9oQprBmAptwf1+3bAmufbswGLxe9+FtoFl8VV2/8q2aO3tC+nI2pZg/4Lbl7HMrvYeFDcutePBMwyStjBOdTgp61FT9WgtaZ34TvWxjC/dnN9Nul/2zTQmKMCZcSjU0fhocqA=,iv:ARdDcI/XDc0sWhdfnyVZ6UJf8TKzdxrCwNTzN6ZXoLs=,tag:LabpH/IQHefGypfxzFsYUQ==,type:str]
+  lastmodified: "2024-12-24T18:16:31Z"
+  mac: ENC[AES256_GCM,data:EWKGr6PLa0xw19ngqa6CmWhdrnruR6Ajs2g/N7QwfjsK3eXTr3H0OOl+tqJKe+Bb9D1VQd0d3h7S1+EpDNV3yFO6BGHjqoAuHP//fskVg4w3Vs7uS27l0nS2BRngEkjW3i7tBOXxDhqs5NlOhnhz4MeAQ3lK5aDU0YR9S+Hl5bk=,iv:yQEdmnMwORlf0OJduDy+bFMw7Gz7xiStmQx/w/zgM3k=,tag:cDK57+BJkQdWm8WnfNxWiw==,type:str]
   pgp:
     - created_at: "2024-12-22T22:21:14Z"
       enc: |-
