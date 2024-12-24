@@ -1,0 +1,73 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: authentik
+  namespace: authentik
+spec:
+  chart:
+    spec:
+      chart: authentik
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: authentik
+      version: 2024.12.1
+  interval: 1m0s
+  values:
+    authentik:
+      bootstrap_password: ENC[AES256_GCM,data:DGe9xFqIh8Cm6KMUVxmAwGT2T4MbSdr/BU+O+tS/rUGtFqMbyK9X1HI4QZUg5PcTwq4jG/R3IzUvokBu,iv:7KkHF4GTJvCETA14NHOxv+H86kVkfYQD+TpGqVC3mGM=,tag:Wt9Tl/6HVRGRHCCEWkTV1g==,type:str]
+      bootstrap_token: ENC[AES256_GCM,data:tZc+t/Y4V9MvWoMYJlJjb6zPF1AKktenO381t67h/PcAksmV6azxi19gN0k/cniLC6+kSkqVG8q0okYJ,iv:nrEdHAd3KmK4pwsGe2bJmPdk/C0vg7tDTOUlHbUYaeY=,tag:z68D1Poz9tBdxmFYPtaMgw==,type:str]
+      bootstrap_email: ENC[AES256_GCM,data:D19xsyBtaXYimO2d1hWe,iv:xstghDAB5cTnCNMkE+zsjDUfunsLIFcaK1w+QQRkGSE=,tag:MG8qNa//8ULZscUBT6fceQ==,type:str]
+      secret_key: ENC[AES256_GCM,data:NGBsDz1fmoECFh4IUk89RQurq9cdRcYtsLgRXH4buNQgUSA3Ac8oSEYRKQuFliG96/LpUCUTyFcqK2QC,iv:JL9ioeX5n6GpP1xOi8j/zswa+7mlFyfpxcK6iNyAkAE=,tag:tNDf5di1BZoEVgJDi8VUgQ==,type:str]
+      error_reporting:
+        enabled: false
+      postgresql:
+        password: ENC[AES256_GCM,data:zLtYANOoZsipmj8Uiwar1rZyWf2HAjHpIIY1gDAjbLEq9CC4/aXNo0MBz+9GBa5Ro9b/z3APtzcl2gVT,iv:aSso5VXApBIXwJQbpRxfwPBvCNlHv0/vn4MUdgl+v6g=,tag:e9WfXvvHS1I34ltFq2qfnw==,type:str]
+    server:
+      ingress:
+        ingressClassName: nginx-private
+        enabled: true
+        hosts:
+          - sso.ddole.net
+        tls: [ ]
+        annotations:
+          external-dns.alpha.kubernetes.io/ttl: "60"
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: true
+          labels:
+            release: kube-prometheus-stack
+    postgresql:
+      enabled: true
+      auth:
+        password: ENC[AES256_GCM,data:Vx8jvEmJDTa+0CJqYBdbE5H0TMCaleMIwMePQtHF3BuIWEZo7MOKiH7+TBbOGGMZhOwxzBevMn3Ul7/Q,iv:W+SXuDvm6uTJvudTrbxAwVVslhtsF0HanckIxqlbVeU=,tag:FumKhJyOnYANZnd//7m+7Q==,type:str]
+      primary:
+        persistence:
+          enabled: true
+          existingClaim: authentik-postgres
+    redis:
+      enabled: true
+sops:
+  kms: [ ]
+  gcp_kms: [ ]
+  azure_kv: [ ]
+  hc_vault: [ ]
+  age: [ ]
+  lastmodified: "2024-12-24T19:39:42Z"
+  mac: ENC[AES256_GCM,data:P5OZgkPiZwx/Sg323gVR4Tj1K8xknp9HSgC3tfgvFrgVfV+W9R0HfoVfb16qqJQBLUQHiWy6pNUx+mua5Iw1pEH515r1iwlkaRliF0hSi+pDtxMLLkfkK5+5bJsuNXt/K2z0yDWqTFQEn6aw3rzwzgu0B5MeYlLImHwR8tbME8w=,iv:uQhIjpeb9wz3ykNFpUQiPCKXVGmejoEoKud3kFSsZIg=,tag:PiKNM5oGyK1CYjaaOw6yGA==,type:str]
+  pgp:
+    - created_at: "2024-12-24T19:39:42Z"
+      enc: |-
+        -----BEGIN PGP MESSAGE-----
+        
+        hF4DU+GaVkdTfp0SAQdAIM3y4sdK6GFGMD3VpT+7PwsfJXQWNJnBwaSSJxJAtB0w
+        9C0Q9OWXPzOybf5LZgK+whzyloQkAhM7Vrk8b93ny0pocHZGbXc4DDBipF1tug1+
+        1GgBCQIQv1VDpF48tfK+pOAq9gtGilDkDIFe1Q3bvIo1gnMmoELl1wtwrF184vVR
+        +1vSCASdh7LCBRRFHifrrxsau1Nx3aXKL94wEpSxJSg/n0le4wwSI+PbkwhqUnC4
+        4xAfWLhfvEWnYw==
+        =Uv6B
+        -----END PGP MESSAGE-----
+      fp: 1AB4CEBCE4D3CD6A23AA59104C16B8CD8B6050E3
+  encrypted_regex: bootstrap_password|bootstrap_token|bootstrap_email|secret_key|password
+  version: 3.9.2
