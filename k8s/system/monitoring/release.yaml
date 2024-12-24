@@ -280,7 +280,7 @@ spec:
         enabled: true
         # For Kubernetes >= 1.18 you should specify the ingress-controller via the field ingressClassName
         # See https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/#specifying-the-class-of-an-ingress
-        # ingressClassName: nginx
+        ingressClassName: nginx-private
         annotations:
           external-dns.alpha.kubernetes.io/ttl: "60"
         labels: { }
@@ -815,7 +815,7 @@ spec:
         ## IngressClassName for Grafana Ingress.
         ## Should be provided if Ingress is enable.
         ##
-        # ingressClassName: nginx
+        ingressClassName: nginx-private
         ## Annotations for Grafana Ingress
         ##
         annotations:
@@ -2811,7 +2811,7 @@ spec:
         enabled: true
         # For Kubernetes >= 1.18 you should specify the ingress-controller via the field ingressClassName
         # See https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/#specifying-the-class-of-an-ingress
-        # ingressClassName: nginx
+        ingressClassName: nginx-private
         annotations:
           external-dns.alpha.kubernetes.io/ttl: "60"
         labels: { }
