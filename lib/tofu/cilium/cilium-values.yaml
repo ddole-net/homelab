@@ -31,6 +31,8 @@ operator:
       cpu: 50m
       memory: 128Mi
   replicas: 1
+  prometheus:
+    enabled: true
 
 # Roll out cilium agent pods automatically when ConfigMap is updated.
 rollOutCiliumPods: true
@@ -90,3 +92,12 @@ hubble:
   ui:
     enabled: true
     rollOutPods: true
+#  metrics:
+#    enableOpenMetrics: false
+#    serviceMonitor:
+#      enabled: true
+#      labels:
+#        release: "kube-prometheus-stack"
+
+prometheus:
+  enabled: true
