@@ -12,3 +12,18 @@ spec:
   issuerRef:
     name: letsencrypt-staging
     kind: ClusterIssuer
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: ddole-net-le-production-wildcard
+  namespace: cert-manager
+spec:
+  secretName: ddole-net-le-production-wildcard
+  commonName: ddole.net
+  dnsNames:
+    - "ddole.net"
+    - "*.ddole.net"
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
