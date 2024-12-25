@@ -1,0 +1,20 @@
+name: stalwart
+services:
+  mail-server:
+    tty: true
+    stdin_open: true
+    ports:
+      - 443:443
+      - 8080:8080
+      - 2525:25
+      - 587:587
+      - 465:465
+      - 143:143
+      - 993:993
+      - 4190:4190
+      - 110:110
+      - 995:995
+    volumes:
+      - ./data:/opt/stalwart-mail
+    container_name: stalwart-mail
+    image: stalwartlabs/mail-server:latest
