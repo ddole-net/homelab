@@ -803,11 +803,26 @@ spec:
       ## Editable flag for the default dashboards
       ##
       defaultDashboardsEditable: false
-      adminPassword: ENC[AES256_GCM,data:ZcUTWLnD2AD049UjSdO3a8+9IwWfDFzG1PIkRZ2eX1Lyy1XFJaP+Lw==,iv:rllelMvewy4M7NFRxuNUsREMT7wUaVDwjB3QUwXy+M4=,tag:KuPbYT6aOd3ouE+fNQ6SLA==,type:str]
+      adminPassword: ENC[AES256_GCM,data:f7MEs/pOvEV1QWZtgWSfDvsjUJ9sdjSKm67/VsM4mIqyDaJFoyDavA==,iv:2uNMJYqaSvqBL4FDBjN9n5PBlboZJIxRgO1WOmWwspo=,tag:ACOGe8zQGzvOW98x10DZAg==,type:str]
       rbac:
         ## If true, Grafana PSPs will be created
         ##
         pspEnabled: false
+      grafana.ini:
+        auth:
+          signout_redirect_url: https://sso.ddole.net/application/o/grafana/end-session/
+          oauth_auto_login: true
+        auth.generic_oauth:
+          name: authentik
+          enabled: true
+          client_id: ENC[AES256_GCM,data:2fa6Ali8TGl3WAYDBPtF+k27pbW4XrT0k9xh2/gG+AwuVio+84AU7g==,iv:Hv+TEcxxmDYkEaEqDnKCejqhyK5VdcqHUz0E09noPyQ=,tag:hl9BXE2KRPRNycg02YxnPQ==,type:str]
+          client_secret: ENC[AES256_GCM,data:6i6dqEiy8Uo/jDGVotzlYNGkHDv00eFe6DAYJsIZnvH5w+oKIO5/bfKo+gFoEt5Qqg2vGBpP7GZpb1inEjDg639RRfjZDrPU9fyxwGiRgPcL3BRLzQFF1zzt5qD4P5DzgpGrhTAFnhaLns8SvSlqWK6AtPAjHHr/sX7x+y2NAVE=,iv:b+KuNEWfQWjaHfZfaJmQQ3BFkKpAlZV+/eYqtIF12+8=,tag:ax7pWNDHyPGDDhGeIjCp3A==,type:str]
+          scopes: openid profile email
+          auth_url: https://sso.ddole.net/application/o/authorize/
+          token_url: https://sso.ddole.net/application/o/token/
+          api_url: https://sso.ddole.net/application/o/userinfo/
+          # Optionally map user groups to Grafana roles
+          role_attribute_path: contains(groups, 'Grafana Admins') && 'Admin' || contains(groups, 'Grafana Editors') && 'Editor' || 'Viewer'
       ingress:
         ## If true, Grafana Ingress will be created
         ##
@@ -4197,20 +4212,20 @@ sops:
   azure_kv: [ ]
   hc_vault: [ ]
   age: [ ]
-  lastmodified: "2024-12-24T17:08:09Z"
-  mac: ENC[AES256_GCM,data:VSk6a1Eb+P1TGxD/wrpwzzx5/7oKtP5X/id2OkCiW+ryh+U0myZtnor3GblCszFZKNDtDSo10pJVtoe5LMq5HhKF1OCQqK999j5TkAhqN6iudvQsRlyTXRF4rq+sDW+6QWYHXPJMCiurmwBnivXaDVPQ9+MLuk2oSNKwxmtQw4w=,iv:WO85YeMivpFhIbOUrxlhEaI70VN0I+gjFT4XJCJkd/c=,tag:vHPt600f7l3ZFZXasJiSCA==,type:str]
+  lastmodified: "2024-12-25T23:37:34Z"
+  mac: ENC[AES256_GCM,data:odqLIaRN7SC76cVnwvXI9t0T392AbKHT681SLCoB1+fd0a6RTfa1jYIOvcdot3kpcJn9GTxPjkvChh/vU0g/hYUDEEG2Nz6k0LBPHxZVfVVvZAiBfKtm+4jdS7Tw1FvQEj42M1OZgvxHIgf2ykFue7Tdpi60ZdEmfjUYbwtH+Uc=,iv:h87K94EyyUI6dNictHp+EOBf1TsTTLHpmvmdM9i1qGE=,tag:gqJGoaHFrTGIazDPHJ6rXA==,type:str]
   pgp:
-    - created_at: "2024-12-24T17:07:19Z"
+    - created_at: "2024-12-25T23:37:34Z"
       enc: |-
         -----BEGIN PGP MESSAGE-----
         
-        hF4DU+GaVkdTfp0SAQdAtMKyn83vzjnKmkIwa+oK2Lf713ZaZqaoLZq8dnptfHsw
-        hYSjd7gt0VdVWXXR4vP9SgQr3Z07koQw0X+DmIcanfMwFxKwRLemWv2ws2XwBaz4
-        1GYBCQIQw/yQ7tfnYnHuK0hSkEzoxEwqkDSZeolraXXQVVk6COlexNoJjVOJUCP1
-        HrvlItwgNWWKfnnS5RmB8IjtSiOrqeTw5UUFlyq8oFLRJ8lDXAQEKL8ur7TsXSgp
-        GjBSVTdQ0sw=
-        =TF/L
+        hF4DU+GaVkdTfp0SAQdA278GnUkmNvipr9aNLLCnZou8rgYnEu8YqIcOQN1SAQQw
+        pVyKWdrb6nwAEaniXUjgi7gUMl4lnL6yt+PpoLMnpDa0tzvJCEzPPAMZj48qc/eB
+        1GgBCQIQTzDtDiEAnGRZL55aYLgbmUc66D06La8OzKw8qDmcuWHU7P/hZ4fwert/
+        lKGtrSOooEGV8zDiOLYbr/MGag+MiaQtRZd/agm0Q7mdDf064fyTb0Ad/v/+GTqQ
+        a9Fy5VvnC1hHwQ==
+        =hkqQ
         -----END PGP MESSAGE-----
       fp: 1AB4CEBCE4D3CD6A23AA59104C16B8CD8B6050E3
-  encrypted_regex: adminPassword
+  encrypted_regex: client_id|client_secret|adminPassword
   version: 3.9.2
