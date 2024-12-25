@@ -1,0 +1,69 @@
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: proxmox
+  namespace: external-proxy
+  annotations:
+    field.cattle.io/ipAddresses: '["192.168.10.100"]'
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ports:
+    - name: pve-port
+      port: 8006
+      protocol: TCP
+      targetPort: 8006
+  sessionAffinity: None
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: proxmox
+  namespace: external-proxy
+subsets:
+  - addresses:
+      - ip: "10.0.0.3"
+    ports:
+      - name: https
+        port: 8006
+        protocol: TCP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: proxmox
+  namespace: external-proxy
+  annotations:
+    external-dns.alpha.kubernetes.io/ttl: "60"
+    ingress.kubernetes.io/configuration-snippet: "proxy_set_header Host $http_host;\nproxy_set_header
+      X-Real-IP $remote_addr;\nproxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      \     \nproxy_http_version 1.1;\nproxy_set_header Upgrade $http_upgrade;\nproxy_set_header
+      Connection $connection_upgrade;      "
+    nginx.ingress.kubernetes.io/backend-protocol: HTTPS
+    nginx.ingress.kubernetes.io/cors-allow-headers: Authorization
+    nginx.ingress.kubernetes.io/cors-allow-methods: PUT, GET, POST, OPTIONS, DELETE
+    nginx.ingress.kubernetes.io/cors-allow-origin: "*"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/server-snippet: |-
+      client_max_body_size 0;
+#      server_tokens off;
+#      proxy_hide_header X-Powered-By;
+#  generation: 2
+#  managedFields:
+spec:
+  rules:
+    - host: pve.ddole.net
+      http:
+        paths:
+          - backend:
+              service:
+                name: proxmox
+                port:
+                  number: 8006
+            path: /
+            pathType: ImplementationSpecific
+  tls: [ ]
+---
