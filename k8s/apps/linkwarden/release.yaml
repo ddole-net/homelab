@@ -1,0 +1,172 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: linkwarden
+  namespace: linkwarden
+spec:
+  chart:
+    spec:
+      chart: linkwarden
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: linkwarden
+      version: 0.1.0
+  interval: 1m0s
+  values:
+    replicaCount: 1
+    linkwarden:
+      existingSecret: ""
+      # -- NextAuth URL
+      nextAuthUrl: https://linkwarden.ddole.net/api/v1/auth
+      # -- NextAuth secret (Generate a random string using `openssl rand -base64 32`)
+      nextAuthSecret: ENC[AES256_GCM,data:cTs3V6q88XBTlhccLFDM9PmW6dYAZbVHztnKJML97IPBwrxfA+iBu0Y8Km0=,iv:UTiwoH/K7UpLCiGbhpqByIZti6P2i3INS5jfFQWQvoo=,tag:3T0X17wvkAhRa4rEd4gfXw==,type:str]
+      # -- If set to true, registration will be disabled.
+      disableRegistration: true
+      # -- If set to true, users will be able to login with username and password.
+      credentialsEnabled: false
+      # -- If set to true, new users will not be able to login with SSO.
+      disableNewSSOUsers: false
+      # -- The numbers of Links to fetch every time you reach the bottom of the webpage
+      paginationTakeCount: 50
+      # -- Max number of playwright workers
+      maxWorkers: 5
+      # -- Adjusts how often a user can trigger a new archive for each link (in minutes).
+      reArchiveLimit: 5
+      # -- The amount of time to wait for the website to be archived (in seconds).
+      autoScrollTimeout: 30
+      # -- Browser timeout for archiving
+      browserTimeout: 30000
+      # -- Ignore certificate verification while fetching links
+      ignoreUnauthorizedCA: false
+      # -- Ignore HTTPS errors in browser
+      ignoreHttpsErrors: false
+      # -- Disable archiving links
+      disablePreservation: false
+      # -- The variables you need to configure to enable password recovery without the admin interfering, email verification, etc.
+      # -- If set to true, email will be enabled. Requires emailFrom and emailServer to be set.
+      emailProvider: ""
+      # -- Email from address, (ignored if existingSecret is set)
+      emailFrom: ""
+      # -- Email server (That sensitive string that starts with smtp://...)
+      emailServer: ""
+      # -- Base URL to put in email links
+      emailBaseUrl: ""
+      # -- Additional environment variables for Linkwarden
+      environment: { }
+      # -- Storage configuration
+      storage:
+        # -- Storage type: 's3' or 'filesystem'
+        type: filesystem
+        # -- Storage folder for data (required if using filesystem storage)
+        storageFolder: /data/data
+        # -- Persistent volume claim settings for filesystem storage
+        pvc:
+          # -- Enable persistent volume claim for filesystem storage
+          enabled: true
+          # -- Existing persistent volume claim for filesystem storage
+          existingClaim: ""
+          # -- Storage class for filesystem storage
+          storageClass: ""
+          # -- Access modes for filesystem storage
+          accessModes:
+            - ReadWriteOnce
+          # -- Size of the persistent volume claim for filesystem storage
+          size: 5Gi
+      sso:
+        existingSecret: sso-secrets
+        # -- name of existing secret with environment variables required by the enabled sso providers
+    # -- CNPG PostgreSQL database configuration
+    postgresql:
+      # -- Enable the integrated PostgreSQL database (using the CNPG Cluster Helm chart)
+      enabled: true
+      # -- PostgreSQL cluster name
+      cluster:
+        # -- Number of PostgreSQL instances
+        instances: 1
+        # -- Storage configuration for PostgreSQL
+        storage:
+          # -- Size of the persistent volume claim for PostgreSQL
+          size: 2Gi
+          # -- Storage class for PostgreSQL
+          storageClass: ""
+        monitoring:
+          enabled: true
+      # Additional configs
+      # For more information, see official documentation at https://github.com/cloudnative-pg/charts/tree/main/charts/cluster
+    # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
+    ingress:
+      enabled: true
+      className: nginx-private
+      annotations:
+        external-dns.alpha.kubernetes.io/ttl: "60"
+      # kubernetes.io/ingress.class: nginx
+      # kubernetes.io/tls-acme: "true"
+      hosts:
+        - host: linkwarden.ddole.net
+          paths:
+            - path: /
+              pathType: ImplementationSpecific
+      tls: [ ]
+      #  - secretName: chart-example-tls
+      #    hosts:
+      #      - chart-example.local
+    resources: { }
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # This is for setting Kubernetes Annotations to a Pod.
+    # For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
+    podAnnotations: { }
+    # This is for setting Kubernetes Labels to a Pod.
+    # For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
+    podLabels: { }
+    #This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/
+    autoscaling:
+      enabled: false
+      minReplicas: 1
+      maxReplicas: 100
+      targetCPUUtilizationPercentage: 80
+      # targetMemoryUtilizationPercentage: 80
+    podSecurityContext: { }
+    # fsGroup: 2000
+    containerSecurityContext: { }
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # readOnlyRootFilesystem: true
+    # runAsNonRoot: true
+    # runAsUser: 1000
+    nodeSelector: { }
+    tolerations: [ ]
+    affinity: { }
+sops:
+  kms: [ ]
+  gcp_kms: [ ]
+  azure_kv: [ ]
+  hc_vault: [ ]
+  age: [ ]
+  lastmodified: "2024-12-25T23:23:23Z"
+  mac: ENC[AES256_GCM,data:OnIeltVi5yjd+JM1GZ7TeX9k2hM6nZnDZkJDGOHApyPMOFluKSxkYrvwN1CDQuSvNKdQkw/stumUYVWEimBYMyJO6diaepfPZCLGuJtGztByL0Xd4IbGZbBE9nKY0NizQeUsZD/vw+NTzv6CdLC83xt1748ZLS5Q+DpeWegxWBc=,iv:OaaFPghcrhJQ1qGh7F5ctaLk+PfcX2FPP7hMmoeip3o=,tag:VK9eWFbw7AO7d3XVnqEvGA==,type:str]
+  pgp:
+    - created_at: "2024-12-25T23:23:23Z"
+      enc: |-
+        -----BEGIN PGP MESSAGE-----
+        
+        hF4DU+GaVkdTfp0SAQdAnpGp+hMRJ7WXFyRsFif543rPg/4JuJ1mOMQBJoCnQQcw
+        QGQj2iBcGswtvTpcHNMmTcHgudQkvTRJ73bjHtYR54o4H0qhZcrhOSnbDBEWvhvK
+        1GYBCQIQcFW+IYMJuaEcpqIRX5zozE/OMOsFVSbryfpjCWJQhxj/W/tSYDduT9Qk
+        YPlRa0I8gkO92AWkZmVyl1jeIswynb6AnbHFlRQtbRmzQG/qIRvMzCWL2Y7U3Ph+
+        nEc7FsWd+QE=
+        =uPni
+        -----END PGP MESSAGE-----
+      fp: 1AB4CEBCE4D3CD6A23AA59104C16B8CD8B6050E3
+  encrypted_regex: nextAuthSecret
+  version: 3.9.2
