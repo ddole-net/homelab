@@ -803,7 +803,7 @@ spec:
       ## Editable flag for the default dashboards
       ##
       defaultDashboardsEditable: false
-      adminPassword: ENC[AES256_GCM,data:f7MEs/pOvEV1QWZtgWSfDvsjUJ9sdjSKm67/VsM4mIqyDaJFoyDavA==,iv:2uNMJYqaSvqBL4FDBjN9n5PBlboZJIxRgO1WOmWwspo=,tag:ACOGe8zQGzvOW98x10DZAg==,type:str]
+      adminPassword: ENC[AES256_GCM,data:HR++jJBXokiYXuvTDVYxlgCpneLsKvqrpVJszVcwI5d7h0bYCM9WYA==,iv:9N9JddZysa83riJ+HAk7dv20cTNicwgSUPFicgBzuZQ=,tag:rVOyY89aRWzt+ZxNfP0T0A==,type:str]
       rbac:
         ## If true, Grafana PSPs will be created
         ##
@@ -815,14 +815,20 @@ spec:
         auth.generic_oauth:
           name: authentik
           enabled: true
-          client_id: ENC[AES256_GCM,data:2fa6Ali8TGl3WAYDBPtF+k27pbW4XrT0k9xh2/gG+AwuVio+84AU7g==,iv:Hv+TEcxxmDYkEaEqDnKCejqhyK5VdcqHUz0E09noPyQ=,tag:hl9BXE2KRPRNycg02YxnPQ==,type:str]
-          client_secret: ENC[AES256_GCM,data:6i6dqEiy8Uo/jDGVotzlYNGkHDv00eFe6DAYJsIZnvH5w+oKIO5/bfKo+gFoEt5Qqg2vGBpP7GZpb1inEjDg639RRfjZDrPU9fyxwGiRgPcL3BRLzQFF1zzt5qD4P5DzgpGrhTAFnhaLns8SvSlqWK6AtPAjHHr/sX7x+y2NAVE=,iv:b+KuNEWfQWjaHfZfaJmQQ3BFkKpAlZV+/eYqtIF12+8=,tag:ax7pWNDHyPGDDhGeIjCp3A==,type:str]
+          client_id: $__file{/etc/secrets/sso_secret/client_id}
+          client_secret: $__file{/etc/secrets/sso_secret/client_secret}
           scopes: openid profile email
           auth_url: https://sso.ddole.net/application/o/authorize/
           token_url: https://sso.ddole.net/application/o/token/
           api_url: https://sso.ddole.net/application/o/userinfo/
           # Optionally map user groups to Grafana roles
           role_attribute_path: contains(groups, 'Grafana Admins') && 'Admin' || contains(groups, 'Grafana Editors') && 'Editor' || 'Viewer'
+      extraSecretMounts:
+        - name: auth-generic-oauth-secret-mount
+          secretName: sso-secrets
+          defaultMode: 288
+          mountPath: /etc/secrets/sso_secret
+          readOnly: true
       ingress:
         ## If true, Grafana Ingress will be created
         ##
@@ -4212,20 +4218,20 @@ sops:
   azure_kv: [ ]
   hc_vault: [ ]
   age: [ ]
-  lastmodified: "2024-12-25T23:37:34Z"
-  mac: ENC[AES256_GCM,data:odqLIaRN7SC76cVnwvXI9t0T392AbKHT681SLCoB1+fd0a6RTfa1jYIOvcdot3kpcJn9GTxPjkvChh/vU0g/hYUDEEG2Nz6k0LBPHxZVfVVvZAiBfKtm+4jdS7Tw1FvQEj42M1OZgvxHIgf2ykFue7Tdpi60ZdEmfjUYbwtH+Uc=,iv:h87K94EyyUI6dNictHp+EOBf1TsTTLHpmvmdM9i1qGE=,tag:gqJGoaHFrTGIazDPHJ6rXA==,type:str]
+  lastmodified: "2024-12-25T23:45:53Z"
+  mac: ENC[AES256_GCM,data:6PDwACQhNE9Ut6tGeiYfMM02QdP37wRG6peZCRYgr/Ix36EGH3Ht5TtJlaja522AQfoJQzF/eKJyekOhWFPbyyps/U2BmwxmJP6LyZoi4+IiUV6NxHETypwF2eni3sm7JdUF2YiJZkSS/PvvUjcV0MxQlazildWGqMpOrIUNBXM=,iv:yeY6Z55V+kNCnCFKPpQ19Ikpl6lT1fy+x7e2SX3Lc/c=,tag:tbdNp+Psd8Q8XWxt/7X/8g==,type:str]
   pgp:
-    - created_at: "2024-12-25T23:37:34Z"
+    - created_at: "2024-12-25T23:45:53Z"
       enc: |-
         -----BEGIN PGP MESSAGE-----
         
-        hF4DU+GaVkdTfp0SAQdA278GnUkmNvipr9aNLLCnZou8rgYnEu8YqIcOQN1SAQQw
-        pVyKWdrb6nwAEaniXUjgi7gUMl4lnL6yt+PpoLMnpDa0tzvJCEzPPAMZj48qc/eB
-        1GgBCQIQTzDtDiEAnGRZL55aYLgbmUc66D06La8OzKw8qDmcuWHU7P/hZ4fwert/
-        lKGtrSOooEGV8zDiOLYbr/MGag+MiaQtRZd/agm0Q7mdDf064fyTb0Ad/v/+GTqQ
-        a9Fy5VvnC1hHwQ==
-        =hkqQ
+        hF4DU+GaVkdTfp0SAQdAfGiu+bH1NHiV/HJKItHU38NGcDPsKPP8zQwWUwL4JBYw
+        13TAF0oP1kkRH1qy8hS3UMoGm1bS1sfqeawb2l/xuyGShwXgaN+uMRco76pKUEYK
+        1GYBCQIQKQmnxJ7iLQiqYMOuWKFm43iaCWkpww2MD7TXzvg1rnjgSCqKe4nP31Oo
+        24c9gtsuQDyp/Yq9a5UJwEWy6Kc/2x7vkd3EF3hV9tSiP0DZc0YBsbxqqU+HF303
+        Vf+slMiV7Lw=
+        =26YL
         -----END PGP MESSAGE-----
       fp: 1AB4CEBCE4D3CD6A23AA59104C16B8CD8B6050E3
-  encrypted_regex: client_id|client_secret|adminPassword
+  encrypted_regex: adminPassword
   version: 3.9.2
